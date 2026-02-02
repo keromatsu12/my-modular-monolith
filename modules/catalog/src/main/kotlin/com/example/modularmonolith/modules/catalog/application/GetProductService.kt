@@ -5,7 +5,7 @@ import com.example.modularmonolith.modules.catalog.domain.ProductRepository
 import org.springframework.stereotype.Service
 
 @Service
-internal class GetProductService(
+class GetProductService(
     private val productRepository: ProductRepository
 ) {
     fun execute(id: String): Product? {
