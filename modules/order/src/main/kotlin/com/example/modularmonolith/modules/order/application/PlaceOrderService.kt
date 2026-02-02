@@ -1,6 +1,6 @@
 package com.example.modularmonolith.modules.order.application
 
-import com.example.modularmonolith.modules.catalog.application.GetProductService
+import com.example.modularmonolith.modules.catalog.application.ProductCatalog
 import com.example.modularmonolith.modules.order.domain.Order
 import com.example.modularmonolith.modules.order.domain.OrderItem
 import com.example.modularmonolith.modules.order.domain.OrderRepository
@@ -11,12 +11,12 @@ import java.util.UUID
 @Service
 class PlaceOrderService(
     private val orderRepository: OrderRepository,
-    private val getProductService: GetProductService
+    private val productCatalog: ProductCatalog
 ) {
     fun execute(input: PlaceOrderInput): String {
         // Validate items
         val orderItems = input.items.map { item ->
-            val product = getProductService.execute(item.productId)
+            val product = productCatalog.getProduct(item.productId)
                 ?: throw IllegalArgumentException("Product with ID ${item.productId} not found")
 
             OrderItem(
