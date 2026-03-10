@@ -24,10 +24,23 @@ allprojects {
 val rootLibs = libs
 
 subprojects {
+    if (name == "modules") {
+        return@subprojects
+    }
+
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
-    apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
+
+    if (name == "app") {
+        apply(plugin = "org.springframework.boot")
+    } else {
+        configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
+            imports {
+                mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+            }
+        }
+    }
 
     configure<JavaPluginExtension> {
         toolchain {
